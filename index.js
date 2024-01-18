@@ -10,7 +10,11 @@ mongoose
     .then(() => console.log("DBConnection Sucessfull!"))
     .catch((err) => {
      console.log(err);
-}); 
+    }); 
+
+app.get("/api/test", () => {
+    console.log("test is sucessfull!");
+});
 
 app.listen(process.env. PORT || 5000, () => {
     console.log("Backend server is running!");
