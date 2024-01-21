@@ -82,10 +82,10 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
             },
         ]);
         res.status(200).json(data);
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(err);
     }
-})
+});
 
 module.exports = router;
 
