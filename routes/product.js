@@ -3,7 +3,7 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 
 const router = require("express").Router();
 
-//CREATE
+//CREATE - Função para cadastrar produtos
 
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
     const newProduct = new Product(req.body);
@@ -16,7 +16,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-//UPDATE
+//UPDATE - Função para atualizar produtos
 
 router.post("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
@@ -33,7 +33,8 @@ router.post("/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-//DELETE
+//DELETE - Função para deletar produtos
+
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
         await Product.findByIdAndDelete(req.params.id);
@@ -43,7 +44,8 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-//GET PRODUCT
+//GET PRODUCT - Função para lista produto específico
+
 router.get("/find/:id", async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
@@ -53,7 +55,8 @@ router.get("/find/:id", async (req, res) => {
     }
 });
 
-//GET ALL PRODUCTS
+//GET ALL PRODUCTS - Função para listar todos os produtos
+
 router.get("/", async (req, res) => {
     const qNew = req.query.new;
     const qCategory = req.query.category;
