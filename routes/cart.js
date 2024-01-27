@@ -3,7 +3,7 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 
 const router = require("express").Router();
 
-//CREATE - Função para cadastrar produtos
+//CREATE - Função para cadastrar carrinho
 
 router.post("/", verifyToken, async (req, res) => {
     const newCart = new Cart(req.body);
@@ -16,9 +16,9 @@ router.post("/", verifyToken, async (req, res) => {
     }
 });
 
-//UPDATE - Função para atualizar produtos
+//UPDATE - Função para atualizar carrinho
 
-router.post("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
         const updatedCart = await Cart.findByIdAndUpdate(
             req.params.id,
@@ -46,39 +46,24 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 //GET USER CART - Função para lista produto específico
 
-router.get("/find/:userId", async (req, res) => {
+router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const cart = await Cart.findById(req.params.id)
-        res.status(200).json(Cart);
+        const cart = await Cart.findOne({id: req.params.userId});
+        res.status(200).json(cart);
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-// //GET ALL CartS - Função para listar todos os produtos
+// //GET ALL
 
-// router.get("/", async (req, res) => {
-//     const qNew = req.query.new;
-//     const qCategory = req.query.category;
-//     try {
-//         let Carts;
-
-//         if (qNew) {
-//             Carts = await Cart.find().sort({ createdAt: - 1 }).limit(5);
-//         } else if (qCategory) {
-//             Carts = await Cart.find({
-//                 categories: {
-//                     $in: [qCategory],
-//                 },
-//             });
-//         } else {
-//             Carts = await Cart.find();
-//         }
-            
-//         res.status(200).json(Carts);
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// });
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const carts = await Cart.find();
+        res.status(200).json(carts);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+})
 
 module.exports = router;
